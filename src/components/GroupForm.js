@@ -49,8 +49,6 @@ const GroupForm = ({ onAddPrediction, deadline }) => {
     const groupsData = { groupeA, groupeB, groupeC, groupeD, groupeE, groupeF };
 
     for (let [key, value] of Object.entries(groupsData)){ 
-      // Je sais pas quoi mettre encore, on va voir peut être faudra mettre du key on va voir pas sur du tout 
-
       if(value.trim() === "") {
          return alert('Veuillez remplir tout les groupes')
       }
