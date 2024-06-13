@@ -45,17 +45,17 @@ const GroupForm = ({ onAddPrediction, deadline }) => {
     //   return;
     // }
 
-    // Je vais opti après, juste pour te montrer le danger => vaut mieux une boucle ici mais bon je ferais later
-    if (
-      groupeA.trim() === ""
-      || groupeB.trim() === ""
-      || groupeC.trim() === ""
-      || groupeD.trim() === ""
-      || groupeE.trim() === ""
-      || groupeF.trim() === ""
-    ) {
-      return alert('Veuillez remplir tout les groupes')
+    
+    const groupsData = { groupeA, groupeB, groupeC, groupeD, groupeE, groupeF };
+
+    for (let [key, value] of Object.entries(groupsData)){ 
+      // Je sais pas quoi mettre encore, on va voir peut être faudra mettre du key on va voir pas sur du tout 
+
+      if(value.trim() === "") {
+         return alert('Veuillez remplir tout les groupes')
+      }
     }
+      
 
     const generateId = Math.floor(Math.random() * Date.now()).toString()
     
