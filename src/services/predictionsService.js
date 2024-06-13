@@ -27,4 +27,3 @@ export const clearPredictionsById = (generateId) => {
   savePrediction(updatedPredictions);
   return updatedPredictions;
 };
-// Je regarde si j'ai reçu le mail sur mon tél pour pouvoir faire des commits deux secs
