@@ -1,5 +1,15 @@
 import React, { useState } from 'react';
 
+const countries = {
+  groupeA: ['Allemagne', 'Ecosse', 'Hongrie', 'Suisse'],
+  groupeB: ['Espagne', 'Croatie', 'Italie', 'Albanie'],
+  groupeC: ['Slovénie', 'Danemark', 'Serbie', 'Angleterre'],
+  groupeD: ['Pologne', 'Pays-Bas', 'Autriche', ' France'],
+  groupeE: ['Belgique', 'Slovaquie', 'Roumanie', 'Ukraine'],
+  groupeF: ['Turquie', 'Géorgie', 'Portugal', '(République) Tchéquie'],
+}
+
+
 /**
  * Composant GroupForm pour saisir les prédictions d'un utilisateur.
  * @param {Object} props - Props pour le composant GroupForm.
@@ -8,7 +18,14 @@ import React, { useState } from 'react';
  * @returns {JSX.Element} JSX du formulaire de saisie des prédictions.
  */
 const GroupForm = ({ onAddPrediction, deadline }) => {
+  const formatGroupName = (groupName) => {
+    return groupName.replace(/(.+)(.)$/, '$1 $2').toUpperCase()
+  }
+
   const [user, setUser] = useState('');
+  const [selectedCountries, setSelectedCountries] = useState({});
+  const [totalSelections, setTotalSelections] = useState(0);
+
   const [groups, setGroups] = useState({
     groupeA: '',
     groupeB: '',
@@ -17,6 +34,26 @@ const GroupForm = ({ onAddPrediction, deadline }) => {
     groupeE: '',
     groupeF: '',
   });
+
+  const toggleCountrySelection = (group, country) => {
+    const newSelections = { ...selectedCountries };
+    const currentGroupSelection = newSelections[group] || [];
+
+    console.log(group, country);
+    if (currentGroupSelection.includes(country)) {
+      newSelections[group] = currentGroupSelection.filter(c => c !== country)
+      setTotalSelections(prevTotal => prevTotal - 1)
+    } else {
+      if (currentGroupSelection.length < 3 && totalSelections < 16) {
+        newSelections[group] = [...currentGroupSelection, country]
+        setTotalSelections(prevTotal => prevTotal + 1)
+      }
+
+    }
+
+    setSelectedCountries(newSelections)
+  }
+
 
   /**
    * Gère le changement dans les champs d'entrée des groupes de prédictions.
@@ -45,23 +82,20 @@ const GroupForm = ({ onAddPrediction, deadline }) => {
     //   return;
     // }
 
-    
     const groupsData = { groupeA, groupeB, groupeC, groupeD, groupeE, groupeF };
 
-    for (let [key, value] of Object.entries(groupsData)){ 
-      if(value.trim() === "") {
-         return alert('Veuillez remplir tout les groupes')
-      }
+
+    if (totalSelections !== 16) {
+      return alert("Veuillez sélectionner 16 équipes")
     }
-      
 
     const generateId = Math.floor(Math.random() * Date.now()).toString()
-    
-    onAddPrediction({ user, groups, generateId });
+
+    onAddPrediction({ user, groups: selectedCountries, generateId });
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className='p-4 rounded-lg shadow-md max-w-xl mx-auto'>
       <input
         type="text"
         name="user"
@@ -69,20 +103,36 @@ const GroupForm = ({ onAddPrediction, deadline }) => {
         value={user}
         onChange={(e) => setUser(e.target.value)}
         required
+        className='block w-full p-2 mb-4 border rounded-md'
       />
-      {Object.keys(groups).map((group) => (
-        <div key={group}>
-          <label>{group.toUpperCase()}</label>
-          <input
-            type="text"
-            name={group}
-            value={groups[group]}
-            onChange={handleChange}
-            required
-          />
+      {Object.keys(countries).map((group) => (
+        <div key={group} className='mb-4'>
+          <h3 className='font-semibold mb-2 text-lg'>{formatGroupName(group)}</h3>
+          <div className='flex flex-wrap gap-2'>
+            {countries[group].map((country, i) => (
+              <button
+                key={i}
+                type='button'
+                name={group}
+                value={groups[group]}
+                onClick={() => toggleCountrySelection(group, country)}
+                required
+                className={`px-4 py-2 rounded-full border transition-colors duration-300
+                  ${(selectedCountries[group] || []).includes(country) ?
+                   'border-green-800 text-green-950 bg-green-100 hover:border-orange-500 hover:text-orange-950 hover:bg-white' : 
+                   'border-orange-500 text-orange-500 hover:border-green-500 hover:text-green-950'
+                }`}
+              >
+                {country}
+              </button>
+
+            ))}
+
+          </div>
+
         </div>
       ))}
-      <button type="submit">Soumettre la prédiction</button>
+      <button type="submit" className='transition-colors duration-300 w-full bg-amber-500 text-white py-2 rounded-xl hover:bg-amber-600'>Soumettre la prédiction</button>
     </form>
   );
 };

@@ -7,6 +7,11 @@ import React from 'react';
  * @returns {JSX.Element} JSX des prédictions des utilisateurs.
  */
 const UserPredictions = ({ predictions }) => {
+
+  const formatGroupName = (groupName) => {
+    return groupName.replace(/(.+)(.)$/, '$1 $2').toUpperCase()
+  }
+
   return (
     <div>
       <h2>Prédictions</h2>
@@ -14,7 +19,7 @@ const UserPredictions = ({ predictions }) => {
         <div key={index}>
           <h3>Utilisateur: {prediction.user}</h3>
           {Object.entries(prediction.groups).map(([group, result]) => (
-            <p key={group}>{group.toUpperCase()}: {result}</p>
+            <p key={group}>{formatGroupName(group)}: {result.join(" - ")}</p>
           ))}
         </div>
       ))}
