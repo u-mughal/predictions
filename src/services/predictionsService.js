@@ -16,12 +16,14 @@ export const getPredictions = () => {
 
 /**
  * Efface les prédictions pour un utilisateur spécifique du stockage local.
- * @param {string} user - Utilisateur dont les prédictions doivent être effacées.
+ * @param {String} id - ID de l'utilisateur dont les prédictions doivent être effacées.
  * @returns {Array} Liste des prédictions mises à jour après suppression.
  */
-export const clearPredictionsByUser = (user) => {
+export const clearPredictionsById = (generateId) => {
+
   const predictions = getPredictions();
-  const updatedPredictions = predictions.filter(prediction => prediction.user !== user);
+  console.log(predictions);
+  const updatedPredictions = predictions.filter(prediction => prediction.generateId !== generateId); 
   savePrediction(updatedPredictions);
   return updatedPredictions;
 };

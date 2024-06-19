@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import GroupForm from './components/GroupForm';
-import UserPredictions from './components/UserPredictions';
-import Results from './components/Results';
 import AdminPanel from './components/AdminPanel';
-import { savePrediction, getPredictions, clearPredictionsByUser } from './services/predictionsService';
+import { savePrediction, getPredictions, clearPredictionsById } from './services/predictionsService';
+import { Routes, Route } from 'react-router-dom';
+import Home from './components/Home';
 
 /**
  * Application principale pour la prédiction de l'Euro 2024.
@@ -27,13 +26,7 @@ const App = () => {
     savePrediction(predictions);
   }, [predictions]);
 
-  /**
-   * Ajoute une nouvelle prédiction à la liste des prédictions.
-   * @param {Object} newPrediction - Nouvelle prédiction à ajouter.
-   */
-  const handleAddPrediction = (newPrediction) => {
-    setPredictions([...predictions, newPrediction]);
-  };
+
 
   /**
    * Met à jour les résultats réels des groupes.
@@ -55,29 +48,26 @@ const App = () => {
    * Efface les prédictions d'un utilisateur spécifique.
    * @param {string} user - Utilisateur dont les prédictions doivent être effacées.
    */
-  const handleClearPredictionsByUser = (user) => {
-    const updatedPredictions = clearPredictionsByUser(user);
+  const handleClearPredictionsById= (id) => {
+    const updatedPredictions = clearPredictionsById(id);
     setPredictions(updatedPredictions);
   };
 
   return (
-    <div>
-      <h1>Application de Prédiction pour l'Euro 2024</h1>
-      <GroupForm 
-        onAddPrediction={handleAddPrediction} 
-        deadline={deadline}
-      />
-      <UserPredictions predictions={predictions} />
-      <Results predictions={predictions} realResults={realResults} />
-      <AdminPanel 
+
+
+      <Routes>
+        <Route index path='/' element={<Home />} />
+        <Route path='/admin/panel' element={ <AdminPanel 
         onSetRealResults={handleSetRealResults} 
         onSetDeadline={handleSetDeadline} 
-        onClearPredictionsByUser={handleClearPredictionsByUser} 
+        onClearPredictionsById={handleClearPredictionsById} 
         deadline={deadline}
         realResults={realResults}
         predictions={predictions}
-      />
-    </div>
+      />} />
+      </Routes>
+
   );
 };
 

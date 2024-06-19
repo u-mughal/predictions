@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { NavLink } from 'react-router-dom';
 
 /**
  * Composant AdminPanel pour gérer les résultats réels, les délais et effacer les prédictions par utilisateur.
@@ -11,10 +12,11 @@ import React, { useState } from 'react';
  * @param {Array} props.predictions - Tableau d'objets de prédictions.
  * @returns {JSX.Element} JSX du composant AdminPanel.
  */
-const AdminPanel = ({ onSetRealResults, onSetDeadline, onClearPredictionsByUser, realResults, deadline, predictions }) => {
+const AdminPanel = ({ onSetRealResults, onSetDeadline, onClearPredictionsById, realResults, deadline, predictions }) => {
   const [newResults, setNewResults] = useState(realResults);
   const [newDeadline, setNewDeadline] = useState(deadline);
   const [selectedUser, setSelectedUser] = useState('');
+  const [id, setId] = useState("")
 
   /**
    * Gère le changement dans les champs d'entrée des résultats réels.
@@ -51,13 +53,17 @@ const AdminPanel = ({ onSetRealResults, onSetDeadline, onClearPredictionsByUser,
    */
   const handleClear = () => {
     if (window.confirm(`Êtes-vous sûr de vouloir effacer toutes les prédictions pour ${selectedUser} ?`)) {
-      onClearPredictionsByUser(selectedUser);
+      onClearPredictionsById(id);
     }
   };
+
+
 
   return (
     <div>
       <h2>Panneau d'administration</h2>
+      <NavLink to="/"> Accueil </NavLink>
+      <NavLink to="/admin/panel">Panel Admin</NavLink>
       <form onSubmit={handleSubmit}>
         {Object.keys(newResults).map((group) => (
           <div key={group}>
@@ -84,11 +90,11 @@ const AdminPanel = ({ onSetRealResults, onSetDeadline, onClearPredictionsByUser,
       </form>
       <div>
         <label>Sélectionner l'utilisateur pour effacer les prédictions</label>
-        <select value={selectedUser} onChange={(e) => setSelectedUser(e.target.value)}>
+        <select value={id} onChange={(e) => setId(e.target.value)}> 
           <option value="" disabled>Sélectionner un utilisateur</option>
-          {Array.from(new Set(predictions.map(p => p.user))).map(user => (
-            <option key={user} value={user}>{user}</option>
-          ))}
+          {Array.from(new Set(predictions.map(p =>  (
+            <option key={p.generateId} value={p.generateId}>{p.user}</option>
+          ))))}
         </select>
         <button onClick={handleClear}>Effacer les prédictions de l'utilisateur</button>
       </div>
