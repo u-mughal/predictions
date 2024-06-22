@@ -1,23 +1,22 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
+import { usePredictions } from '../context/PredictionsContext';
 
 /**
  * Composant AdminPanel pour gérer les résultats réels, les délais et effacer les prédictions par utilisateur.
  * @param {Object} props - Props pour le composant AdminPanel.
  * @param {Function} props.onSetRealResults - Fonction pour définir de nouveaux résultats réels.
  * @param {Function} props.onSetDeadline - Fonction pour définir une nouvelle date limite.
- * @param {Function} props.onClearPredictionsByUser - Fonction pour effacer les prédictions pour un utilisateur spécifique.
  * @param {Object} props.realResults - Objet des résultats réels actuels.
  * @param {Object} props.deadline - Valeur actuelle de la date limite.
- * @param {Array} props.predictions - Tableau d'objets de prédictions.
  * @returns {JSX.Element} JSX du composant AdminPanel.
  */
-const AdminPanel = ({ onSetRealResults, onSetDeadline, onClearPredictionsById, realResults, deadline, predictions }) => {
+const AdminPanel = ({ onSetRealResults, onSetDeadline, realResults, deadline }) => {
   const [newResults, setNewResults] = useState(realResults);
   const [newDeadline, setNewDeadline] = useState(deadline);
   const [selectedUser, setSelectedUser] = useState('');
   const [id, setId] = useState("")
-
+  const {predictions, clearPredictionsById} = usePredictions()
   /**
    * Gère le changement dans les champs d'entrée des résultats réels.
    * @param {Object} e - Objet de l'événement.
@@ -53,8 +52,11 @@ const AdminPanel = ({ onSetRealResults, onSetDeadline, onClearPredictionsById, r
    */
   const handleClear = () => {
     if (window.confirm(`Êtes-vous sûr de vouloir effacer toutes les prédictions pour ${selectedUser} ?`)) {
-      onClearPredictionsById(id);
+      clearPredictionsById(id);
     }
+
+    setId("")
+
   };
 
 

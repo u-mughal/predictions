@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { usePredictions } from '../context/PredictionsContext';
 
 const countries = {
   groupeA: ['Allemagne', 'Ecosse', 'Hongrie', 'Suisse'],
@@ -17,7 +18,7 @@ const countries = {
  * @param {string} props.deadline - Date limite pour soumettre les prédictions.
  * @returns {JSX.Element} JSX du formulaire de saisie des prédictions.
  */
-const GroupForm = ({ onAddPrediction, deadline }) => {
+const GroupForm = ({ deadline }) => {
   const formatGroupName = (groupName) => {
     return groupName.replace(/(.+)(.)$/, '$1 $2').toUpperCase()
   }
@@ -25,6 +26,7 @@ const GroupForm = ({ onAddPrediction, deadline }) => {
   const [user, setUser] = useState('');
   const [selectedCountries, setSelectedCountries] = useState({});
   const [totalSelections, setTotalSelections] = useState(0);
+  const {addPrediction} = usePredictions()
 
   const [groups, setGroups] = useState({
     groupeA: '',
@@ -91,7 +93,7 @@ const GroupForm = ({ onAddPrediction, deadline }) => {
 
     const generateId = Math.floor(Math.random() * Date.now()).toString()
 
-    onAddPrediction({ user, groups: selectedCountries, generateId });
+    addPrediction({ user, groups: selectedCountries, generateId });
   };
 
   return (

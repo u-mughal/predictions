@@ -1,4 +1,5 @@
 import React from 'react';
+import { usePredictions } from '../context/PredictionsContext';
 
 /**
  * Composant UserPredictions pour afficher les prédictions des utilisateurs.
@@ -6,7 +7,8 @@ import React from 'react';
  * @param {Array} props.predictions - Liste des prédictions des utilisateurs.
  * @returns {JSX.Element} JSX des prédictions des utilisateurs.
  */
-const UserPredictions = ({ predictions }) => {
+const UserPredictions = () => {
+  const { predictions } = usePredictions()
 
   const formatGroupName = (groupName) => {
     return groupName.replace(/(.+)(.)$/, '$1 $2').toUpperCase();

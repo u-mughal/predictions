@@ -4,12 +4,15 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
+import { PredictionsProvider } from './context/PredictionsContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
+    <PredictionsProvider>
     <App />
+    </PredictionsProvider>
     </BrowserRouter>
   </React.StrictMode>
 );
