@@ -5,11 +5,38 @@ const countries = {
   groupeA: ['Allemagne', 'Ecosse', 'Hongrie', 'Suisse'],
   groupeB: ['Espagne', 'Croatie', 'Italie', 'Albanie'],
   groupeC: ['Slovénie', 'Danemark', 'Serbie', 'Angleterre'],
-  groupeD: ['Pologne', 'Pays-Bas', 'Autriche', ' France'],
+  groupeD: ['Pologne', 'Pays-Bas', 'Autriche', 'France'],
   groupeE: ['Belgique', 'Slovaquie', 'Roumanie', 'Ukraine'],
-  groupeF: ['Turquie', 'Géorgie', 'Portugal', '(République) Tchéquie'],
+  groupeF: ['Turquie', 'Géorgie', 'Portugal', 'Tchéquie'],
 }
 
+
+const countryFlags = {
+  Allemagne: 'https://flagcdn.com/w320/de.png',
+  Ecosse: 'https://flagcdn.com/w320/gb-sct.png',
+  Hongrie: 'https://flagcdn.com/w320/hu.png',
+  Suisse: 'https://flagcdn.com/w320/ch.png',
+  Espagne: 'https://flagcdn.com/w320/es.png',
+  Croatie: 'https://flagcdn.com/w320/hr.png',
+  Italie: 'https://flagcdn.com/w320/it.png',
+  Albanie: 'https://flagcdn.com/w320/al.png',
+  Slovénie: 'https://flagcdn.com/w320/si.png',
+  Danemark: 'https://flagcdn.com/w320/dk.png',
+  Serbie: 'https://flagcdn.com/w320/rs.png',
+  Angleterre: 'https://flagcdn.com/w320/gb-eng.png',
+  Pologne: 'https://flagcdn.com/w320/pl.png',
+  'Pays-Bas': 'https://flagcdn.com/w320/nl.png',
+  Autriche: 'https://flagcdn.com/w320/at.png',
+  France: 'https://flagcdn.com/w320/fr.png',
+  Belgique: 'https://flagcdn.com/w320/be.png',
+  Slovaquie: 'https://flagcdn.com/w320/sk.png',
+  Roumanie: 'https://flagcdn.com/w320/ro.png',
+  Ukraine: 'https://flagcdn.com/w320/ua.png',
+  Turquie: 'https://flagcdn.com/w320/tr.png',
+  Géorgie: 'https://flagcdn.com/w320/ge.png',
+  Portugal: 'https://flagcdn.com/w320/pt.png',
+Tchéquie: 'https://flagcdn.com/w320/cz.png',
+};
 
 /**
  * Composant GroupForm pour saisir les prédictions d'un utilisateur.
@@ -97,7 +124,8 @@ const GroupForm = ({ deadline }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className='p-4 rounded-lg shadow-md max-w-xl mx-auto'>
+    
+    <form onSubmit={handleSubmit} className='p-4 max-w-4xl mx-auto rounded-lg shadow-md'>
       <input
         type="text"
         name="user"
@@ -110,23 +138,30 @@ const GroupForm = ({ deadline }) => {
       {Object.keys(countries).map((group) => (
         <div key={group} className='mb-4'>
           <h3 className='font-semibold mb-2 text-lg'>{formatGroupName(group)}</h3>
-          <div className='flex flex-wrap gap-2'>
+          <div className='flex flex-nowrap gap-2 justify-between'>
             {countries[group].map((country, i) => (
               <button
-                key={i}
-                type='button'
-                name={group}
-                value={groups[group]}
-                onClick={() => toggleCountrySelection(group, country)}
-                required
-                className={`px-4 py-2 rounded-full border transition-colors duration-300
-                  ${(selectedCountries[group] || []).includes(country) ?
-                   'border-green-800 text-green-950 bg-green-100 hover:border-orange-500 hover:text-orange-950 hover:bg-white' : 
-                   'border-orange-500 text-orange-500 hover:border-green-500 hover:text-green-950'
-                }`}
-              >
-                {country}
-              </button>
+              key={i}
+              type="button"
+              name={group}
+              value={groups[group]}
+              onClick={() => toggleCountrySelection(group, country)}
+              required
+              className={`relative flex items-center px-4 py-2 w-40 h-16 rounded-full border transition-colors duration-200 text-left overflow-hidden text-ellipsis whitespace-nowrap ${
+                (selectedCountries[group] || []).includes(country)
+                  ? 'border-green-800 text-green-950 bg-green-100 hover:border-orange-500 hover:text-orange-950 hover:bg-white'
+                  : 'border-orange-500 text-orange-500 hover:border-green-500 hover:text-green-950'
+              }`}
+              style={{ marginRight: '0.5rem', marginBottom: '0.5rem' }}
+            >
+              <div
+                className="absolute top-0 left-0 h-full w-1/3 bg-cover bg-center transition-all duration-200 hover:w-2/3"
+                style={{
+                  backgroundImage: `url(${countryFlags[country]})`,
+                }}
+              ></div>
+              <span className="ml-16">{country}</span>
+            </button>
 
             ))}
 

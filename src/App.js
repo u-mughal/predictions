@@ -55,6 +55,7 @@ const App = () => {
 
   return (
 
+    <main className='container mx-auto max-w-screen-xl p-4'>
 
       <Routes>
         <Route index path='/' element={<Home />} />
@@ -67,7 +68,7 @@ const App = () => {
         predictions={predictions}
       />} />
       </Routes>
-
+    </main>
   );
 };
 

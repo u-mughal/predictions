@@ -15,7 +15,7 @@ const UserPredictions = () => {
   };
 
   return (
-    <div className='p-4 rounded-lg shadow-md max-w-xl mx-auto bg-white'>
+    <div className='p-4 rounded-lg shadow-md max-w-4xl mx-auto bg-white'>
       <h2 className='text-2xl font-bold mb-4 text-amber-500'>Prédictions</h2>
       {predictions.map((prediction, index) => (
         <div key={index} className='mb-6 p-4 border rounded-md bg-white'>
